@@ -7,6 +7,10 @@
                      favorited: currentSong.rated == true}"
           ng-show="currentSong && !currentSong.hide">
 
+      <div class="img-lookahead">
+        <img ng-src="{{ nextAlbumImg() }}" />
+      </div>
+
       <div class="item item-image">
         <img ng-src="{{ currentSong.image_large }}" />
       </div>
