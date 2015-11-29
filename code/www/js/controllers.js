@@ -85,6 +85,8 @@ Controller for the favorites page
 */
 .controller('FavoritesCtrl', function( $scope, $window, User ) {
 
+  $scope.username = User.username;
+
   $scope.favorites = User.favorites;
 
   $scope.openSong = function( song ) {
@@ -105,7 +107,7 @@ Controller for the favorites page
 /*
 Controller for our tab bar
 */
-.controller('TabsCtrl', function( $scope, Recommendations, User ) {
+.controller('TabsCtrl', function( $scope, $window, Recommendations, User ) {
 
   // expose the number of new favorites to scope
   $scope.favCount = User.favoriteCount;
@@ -121,6 +123,39 @@ Controller for our tab bar
   $scope.leavingFavorites = function() {
 
     Recommendations.init();
+
+  }
+
+  $scope.logout = function() {
+
+    User.destroySession();
+
+    // instead of using $state.go, we're going to redirect.
+    // reason: we need to ensure views aren't cached.
+    $window.location.href = 'index.html';
+
+  }
+
+})
+
+/*
+Controller for our Splash screen
+*/
+.controller( 'SplashCtrl', function( $scope, $state, User ){
+
+  // attempt to signup/login via User.auth
+  $scope.submitForm = function( username, signingUp ) {
+
+    User.auth( username, signingUp ).then(function(){
+
+      // Session is now set, so lets redirect to discover page
+      $state.go( 'tab.discover' );
+
+    }, function() {
+
+      alert( "Try another username." );
+
+    });
 
   }
 
