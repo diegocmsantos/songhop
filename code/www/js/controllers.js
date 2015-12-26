@@ -83,7 +83,7 @@ Controller for the discover page
 /*
 Controller for the favorites page
 */
-.controller('FavoritesCtrl', function( $scope, $window, User ) {
+.controller('FavoritesCtrl', function( $scope, $window, $ionicPlatform, $cordovaSocialSharing, User ) {
 
   $scope.username = User.username;
 
@@ -99,6 +99,14 @@ Controller for the favorites page
 
     User.removeSongFromFavorites( song, index );
 
+  }
+
+  $scope.shareViaTwitter = function( song ) {
+
+    var message = 'Listening to ' + song.title + ' by ' + song.artist + '.';
+    message += ' This tweet was sent using @ionicframework. Thanks @gothinkster.'
+    $cordovaSocialSharing.shareViaTwitter(message, song.image_small, song.open_url);
+    
   }
 
 })
